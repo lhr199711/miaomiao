@@ -1,5 +1,5 @@
 <template>
     <keep-alive>
-        <router-view></router-view>
+        <router-view class='all-wraper'></router-view>
     </keep-alive> 
 </template>

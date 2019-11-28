@@ -24,36 +24,26 @@ export default {
     },
     beforeRouteLeave (to, from, next) {
         this.prevPath = from.path;
-        next();
+        next()
     },
-    watch:{
+    watch : {
         $route:{
             handler(to,from){
-               if(from){
-                   var res = from.path.indexOf('/movie/');
-                   if(res==-1){
-                        if(to.path == '/movie'){ //其他页面点电影
-                            this.$router.push(this.prevPath)
-                        }
-                   }else{
-                        if(to.path == '/movie'){ //本页面点电影
-                             this.$router.push(from.path)
-                        }
-                   }
-                   
-               }else{
-                   if(to.path == '/movie'){
-                       this.$router.push('/movie/nowplaying');
-                       return;
-                   }
-                    if(this.$router.currentRoute.path == to.path){
-                        
-                    }else{
-                        this.$router.push('/movie/nowplaying')
-                    }  
-               }
+                if(from){
+                    var res = from.path.indexOf('/movie/');
+                    if((res==-1) && (to.path == '/movie')){ //其他页面点电影
+                        this.$router.push(this.prevPath)
+                    }
+                    if((res!=-1) && (to.path == '/movie')){ //本页面点电影
+                        this.$router.push(from.path)
+                    }
+                }else{
+                    if(to.path == '/movie'){ //初始登入
+                        this.$router.push('/movie/nowplaying');
+                    }
+                }
             },
-            immediate: true 
+            immediate : true
         }
     }
 }
