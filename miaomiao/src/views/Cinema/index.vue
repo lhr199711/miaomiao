@@ -1,14 +1,18 @@
 <template>
     <div>
         <Header title="影院"></Header>
+        <CinemaList/>  
         <TabBar></TabBar>  
-        cinema
     </div>
 </template>
 
 <script>
+import CinemaList from '@/components/CinemaList'
 export default {
-    name:'Cinema'
+    name:'Cinema',
+    components : {
+        CinemaList
+    }
 }
 </script>
 
