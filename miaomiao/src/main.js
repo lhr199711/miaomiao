@@ -9,7 +9,9 @@ Vue.config.productionTip = false
 
 import Header from '@/components/Header'
 import TabBar from '@/components/TabBar'
+import Scroller from '@/components/Scroller'
 Vue.component('Header',Header)
+Vue.component('Scroller',Scroller)
 Vue.component('TabBar',TabBar)
 Vue.filter('setWH',(oldV,newV)=>{
     return oldV.replace(/w\.h/,newV)

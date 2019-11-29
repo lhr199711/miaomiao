@@ -4,7 +4,7 @@
             <input v-model='text' placeholder="搜电影,搜影院"> 
             <span @touchstart='back'>取消</span>
         </div>
-        <div class="content" v-show='movies.list'>
+        <div class="content" v-show='movies.list && text'>
             <div>电影/电视剧/综艺</div>
             <div v-for='item in movies.list' :key='item.id' class="item">
                 <img :src="item.img | setWH('64.90')" alt="">
@@ -34,7 +34,8 @@ export default {
     data(){
         return {
             text:'',
-            movies : {}
+            movies : {},
+            timer : 0
         }
     },
     mounted(){
@@ -43,15 +44,17 @@ export default {
     },
     watch : {
         text(v){
+            this.movies = {};
             if(v){
-                this.axios.get('/api/searchList?cityId=10&kw='+this.text).then(res=>{
-                    if(Object.keys(res.data.data).length){
-                        this.movies = res.data.data.movies;
-                    }  
-                })
-            }else{
-                this.movies = {};
-            } 
+                clearTimeout(this.timer);
+                this.timer = setTimeout(()=>{
+                    this.axios.get('/api/searchList?cityId=10&kw='+this.text).then(res=>{
+                        if(Object.keys(res.data.data).length){
+                            this.movies = res.data.data.movies;
+                        }  
+                    })
+                },400) 
+            }
         }
     },
     methods : {
