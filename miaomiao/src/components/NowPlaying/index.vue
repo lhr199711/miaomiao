@@ -1,31 +1,55 @@
 <template>
-    <div class="nowPlaying-wraper">
-        <div v-for='item in movieList' :key='item.id'>
-            <img :src="item.img | setWH('64.90')" alt="">
-            <div>
-                <p class="elipsis">{{item.nm}}</p>
-                <p class="elipsis" v-if="item.globalReleased">观众评 <span class="yellow">{{item.sc}}</span></p>
-                <p class="elipsis" v-else><span class="yellow">{{item.wish}}</span>人想看</p>
-                <p class="elipsis">主演:{{item.star}}</p>
-                <p class="elipsis">{{item.showInfo}}</p>
+    <div class="bscroll">
+        <Scroller>
+            <div class="nowPlaying-wraper">
+                <div v-for='item in movieList' :key='item.id'>
+                    <img :src="item.img | setWH('64.90')" alt="">
+                    <div>
+                        <p class="elipsis">{{item.nm}}</p>
+                        <p class="elipsis" v-if="item.globalReleased && item.sc">观众评 <span class="yellow">{{item.sc}}</span></p>
+                        <p class="elipsis" v-if="item.globalReleased && !item.sc">暂无评分</p>
+                        <p class="elipsis" v-if="!item.globalReleased"><span class="yellow">{{item.wish}}</span>人想看</p>
+                        <p class="elipsis">主演:{{item.star}}</p>
+                        <p class="elipsis">{{item.showInfo}}</p>
+                    </div>
+                    <span :class="[item.globalReleased ? 'red' : 'blue']">{{item.globalReleased ? '购票' : '预售'}}</span>
+                </div>
             </div>
-            <span :class="[item.globalReleased ? 'red' : 'blue']">{{item.globalReleased ? '购票' : '预售'}}</span>
-        </div>
+        </Scroller>
     </div>
 </template>
 
 <script>
+import BScroll from 'better-scroll';
 export default {
     name : 'NowPlaying',
     data(){
         return {
-            movieList : []
+            movieList : [],
+            text : ''
         }
     },
     mounted(){
         this.axios.get('/api/movieOnInfoList?cityId=10').then(res=>{
             if(res.data.msg == 'ok'){
                 this.movieList = res.data.data.movieList;
+                // this.$nextTick(()=>{
+                //     var scorll =new BScroll(this.$refs.bscroll,{
+                //         tap : true,
+                //         probeType: 1
+                //     });
+                //     scorll.on('scroll',(pos)=>{
+                //         if(pos.y>20){
+                //             this.text = "正在刷新..."
+                //         }
+                //     })
+                //     scorll.on('touchEnd',()=>{
+                //         this.text = "刷新成功...";
+                //         setTimeout(()=>{
+                //             this.text = ""
+                //         },1000)
+                //     })
+                // });
             }
         })
     }
@@ -33,9 +57,6 @@ export default {
 </script>
 
 <style scoped>
-    .nowPlaying-wraper{
-        padding: 0 0 50px;
-    }
     .nowPlaying-wraper>div{
         border-bottom: 1px solid #ccc;
         padding: 14px 30px 14px 14px;
@@ -70,5 +91,15 @@ export default {
     }
     .blue{
         background:#3C9FE6;
+    }
+    .bscroll{
+        height: 525px;
+    }
+    .nowPlaying-wraper>p:nth-of-type(1){
+        text-align: center;
+        position: fixed;
+        top: -10px;
+        left:0;
+        width: 100%;
     }
 </style>
