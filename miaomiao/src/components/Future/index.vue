@@ -1,20 +1,24 @@
 <template>
-    <div class="future-wraper">
-        <div v-for='item in movies' :key='item.title'>
-            <h5>{{item.title}}</h5>
-            <div class="item" v-for='k in item.movieList' :key='k.id'>
-                <img :src="k.img | setWH('64.90')" alt="">
-                <div>
-                    <p class="elipsis">{{k.nm}}</p>
-                    <p class="elipsis"><span class="yellow">{{k.wish}}</span>人想看</p>
-                    <p class="elipsis">主演:{{k.star}}</p>
-                    <p class="elipsis">{{k.rt}}上映</p>
+    <div class="bscroll">
+        <Scroller>
+            <div class="future-wraper">
+                <div v-for='item in movies' :key='item.title'>
+                    <h5>{{item.title}}</h5>
+                    <div class="item" v-for='k in item.movieList' :key='k.id'>
+                        <img :src="k.img | setWH('64.90')" alt="">
+                        <div>
+                            <p class="elipsis">{{k.nm}}</p>
+                            <p class="elipsis"><span class="yellow">{{k.wish}}</span>人想看</p>
+                            <p class="elipsis">主演:{{k.star}}</p>
+                            <p class="elipsis">{{k.rt}}上映</p>
+                        </div>
+                        <span :class="[k.showst==4?'blue':'gold']">
+                            {{k.showst==4?'预售':'想看'}}
+                        </span>
+                    </div>
                 </div>
-                <span :class="[k.showst==4?'blue':'gold']">
-                    {{k.showst==4?'预售':'想看'}}
-                </span>
             </div>
-        </div>
+        </Scroller>
     </div>
 </template>
 
@@ -27,6 +31,8 @@ export default {
         }
     },
     mounted(){
+        var allh = window.screen.height;
+        document.querySelector('.bscroll').style.height = allh-142+'px';
         this.axios.get('/api/movieComingList?cityId=10').then(res=>{
                 if(res.data.msg == 'ok'){
                     var ajaxData = res.data.data.comingList;
@@ -65,7 +71,6 @@ export default {
 
 <style scoped>
     .future-wraper{
-        padding:  0 0 50px;
         color: #333;
     }
     .future-wraper h5{

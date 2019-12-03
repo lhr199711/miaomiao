@@ -1,7 +1,8 @@
 <template>
     <div class="bscroll">
-        <Scroller>
+        <Scroller :handleToScroll='handleToScroll' :handleTotouchEnd='handleTotouchEnd'>
             <div class="nowPlaying-wraper">
+                <p>{{text}}</p>
                 <div v-for='item in movieList' :key='item.id'>
                     <img :src="item.img | setWH('64.90')" alt="">
                     <div>
@@ -52,6 +53,19 @@ export default {
                 // });
             }
         })
+    },
+    methods : {
+        handleToScroll(pos){
+            if(pos.y>20){
+                this.text = "正在刷新..."
+            }
+        },
+        handleTotouchEnd(pos){
+           this.text = "刷新成功...";
+            setTimeout(()=>{
+                this.text = ""
+            },1000)
+        }
     }
 }
 </script>
