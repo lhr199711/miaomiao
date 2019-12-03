@@ -1,18 +1,22 @@
 <template>
-    <div class='cinemaList-wraper'>
-        <div v-for='item in cinemas' :key='item.id' class="item">
-            <div class="elipsis">{{item.nm}} <span style="font-size:12px;"><span style="font-size:18px;">{{item.sellPrice}}</span>元起</span></div>
-            <div>
-                <p class="elipsis">{{item.addr}}</p>
-                <span>{{item.distance}}</span>
+    <div class="bscroll">
+        <Scroller>
+            <div class='cinemaList-wraper'>
+                <div v-for='item in cinemas' :key='item.id' class="item">
+                    <div class="elipsis">{{item.nm}} <span style="font-size:12px;"><span style="font-size:18px;">{{item.sellPrice}}</span>元起</span></div>
+                    <div>
+                        <p class="elipsis">{{item.addr}}</p>
+                        <span>{{item.distance}}</span>
+                    </div>
+                    <div>
+                        <span v-for='(v,k,i) in item.tag' :key='i' :class="[(k=='snack' || k=='sell')? 'yellow':'blue']">{{k | formatTag}}</span>
+                    </div>
+                    <div v-if='item.promotion.cardPromotionTag' class="card">
+                        <span>卡</span>{{item.promotion.cardPromotionTag}}
+                    </div>
+                </div>
             </div>
-            <div>
-                <span v-for='(v,k,i) in item.tag' :key='i' :class="[(k=='snack' || k=='sell')? 'yellow':'blue']">{{k | formatTag}}</span>
-            </div>
-            <div v-if='item.promotion.cardPromotionTag' class="card">
-                <span>卡</span>{{item.promotion.cardPromotionTag}}
-            </div>
-        </div>
+        </Scroller>
     </div>
 </template>
 
@@ -25,6 +29,8 @@ export default {
         }
     },
     mounted(){
+        var allh = window.screen.height;
+        document.querySelector('.bscroll').style.height = allh-100+'px';
         this.axios.get('/api/cinemaList?cityId=10').then(res=>{
             if(res.data.msg == 'ok'){
                 var arr = res.data.data.cinemas;
@@ -66,9 +72,6 @@ export default {
 </script>
 
 <style scoped>
-    .cinemaList-wraper{
-        padding: 0 0 50px;
-    }
     .item{
         border-bottom: 1px solid #f5f5f5;
         padding: 13px 30px 13px 15px;

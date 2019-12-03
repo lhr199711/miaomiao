@@ -1,21 +1,23 @@
 <template>
-    <div class="city-wraper">
-        <div class="hotCities">
-            <h4>热门城市</h4>
-            <div>
-                <p v-for="item in hots" :key="item.id">{{item.nm}}</p>
-            </div>
-        </div>
-        <div>
-            <div v-for='item in cities' :key='item.id' class="allCities">
-                <h4>{{item.index}}</h4>
-                <div>
-                    <p v-for='k in item.list' :key='k.id'>{{k.nm}}</p>
+    <div class="bscroll">
+        <Scroller ref='scroller'>
+            <div class="cityWraper">
+                <div class="title">
+                    <p>热门城市</p>
+                    <div>
+                        <p v-for='item in hots' :key='item.id'>{{item.nm}}</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <div v-for='(item,i) in cities' :key='i'>
+                        <p>{{item.index}}</p>
+                        <p v-for='k in item.list' :key='k.id'>{{k.nm}}</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="slideBar">
-            <p v-for='(item,i) in cities' :key='item.id' @touchstart='handToTop(i)'>{{item.index}}</p>
+        </Scroller>
+        <div class="slide">
+            <p v-for='(item,index) in cities' :key='item.index' @touchstart='toTop(index)'>{{item.index}}</p>
         </div>
     </div>
 </template>
@@ -30,6 +32,8 @@ export default {
         }
     },
     mounted(){
+        var allh = window.screen.height;
+        document.querySelector('.bscroll').style.height = allh-142+'px';
         this.axios.get('/api/cityList').then(res=>{
             if(res.data.msg=='ok'){
                 var ajaxdata = res.data.data.cities;
@@ -64,7 +68,6 @@ export default {
             })
             this.hots = hotCities;
             this.cities = allCities;
-
             function findSzm(item){
                 var itemSzm = item.py[0].toUpperCase();
                 for(var j=0;j<allCities.length;j++){
@@ -82,60 +85,69 @@ export default {
                 top: value-91,
                 behavior: "instant"
             })
+        },
+        toTop(index){
+            var ps = document.querySelectorAll('.content>div>p:nth-of-type(1)');
+            var y = -ps[index].offsetTop;
+            this.$refs.scroller.scorllToTop(y)
         }
     }
 }
 </script>
 
 <style scoped>
-    .city-wraper{
+    .bscroll{
         background: #ebebeb;
-        padding: 0 0 51px;
     }
-    .allCities>h4,.hotCities>h4{
+    .cityWraper{
+        background: #ebebeb;
+    }
+    .title>p:nth-of-type(1){
+        font-size:14px;
         line-height: 30px;
-        padding: 0 0 0 15px;
-        font-weight: 400;
-        font-size: 14px;
+        text-indent: 15px;
     }
-    .hotCities>div{
-        background: #f5f5f5;
+    .title>div{
         display: flex;
-        padding: 15px 45px 0 15px;
         flex-wrap: wrap;
+        background: #f5f5f5;
+        padding: 15px 15px 0;
+        margin-right: 30px;
         justify-content: space-between;
     }
-    .hotCities>div>p{
+    .title>div>p{
         background: #fff;
-        color: #333;
-        line-height: 30px;
-        font-size: 14px;
         width: 30%;
         text-align: center;
         margin-bottom: 15px;
+        line-height: 30px;
         border: 1px solid #e6e6e6;
         border-radius: 3px;
     }
-    .allCities p{
-        line-height: 44px;
+    .content>div>p{
+        text-indent: 15px;
+        line-height: 40px;
         font-size: 14px;
-        color: #333;
         background: #f5f5f5;
-        border-bottom: 1px solid #ebebeb;
-        padding:0 0 0 15px;
+        margin-right: 30px;
+        border-bottom:1px solid #ebebeb;
     }
-    .slideBar{
-        padding: 20px 0;
-        position: fixed;
-        right: 0;
-        top: 91px;
-        z-index: 100;
-        height: calc(100% - 182px);
-        width: 30px;
+    .content>div>p:nth-of-type(1){
+        line-height: 30px;
         background: #ebebeb;
+    }
+    .slide{
+        position: fixed;
+        padding: 20px 0;
+        z-index: 200;
+        height: 485px;
+        background: #ebebeb;
+        width: 30px;
+        top:91px;
+        right: 0;
         text-align: center;
         display: flex;
-        flex-direction:column;
-        justify-content: space-between;
+        flex-direction: column;
+        justify-content: space-around;
     }
 </style>
