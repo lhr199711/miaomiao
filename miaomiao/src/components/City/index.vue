@@ -1,17 +1,18 @@
 <template>
     <div class="bscroll">
-        <Scroller ref='scroller'>
-            <div class="cityWraper">
+        <Loading v-if="isLoading" />
+        <Scroller v-else ref='scroller'>
+            <div class="cityWraper" style='transform: translate(0px, 0px) scale(1) translateZ(0px);'>
                 <div class="title">
                     <p>热门城市</p>
                     <div>
-                        <p v-for='item in hots' :key='item.id'>{{item.nm}}</p>
+                        <p v-for='item in hots' :key='item.id' @tap='chooseNowCity(item.nm,item.id)'>{{item.nm}}</p>
                     </div>
                 </div>
                 <div class="content">
                     <div v-for='(item,i) in cities' :key='i'>
                         <p>{{item.index}}</p>
-                        <p v-for='k in item.list' :key='k.id'>{{k.nm}}</p>
+                        <p v-for='k in item.list' :key='k.id' @tap='chooseNowCity(k.nm,k.id)'>{{k.nm}}</p>
                     </div>
                 </div>
             </div>
@@ -28,18 +29,28 @@ export default {
     data(){
         return {
             hots : [],
-            cities : []
+            cities : [],
+            isLoading : true
         }
     },
     mounted(){
         var allh = window.screen.height;
         document.querySelector('.bscroll').style.height = allh-142+'px';
-        this.axios.get('/api/cityList').then(res=>{
-            if(res.data.msg=='ok'){
-                var ajaxdata = res.data.data.cities;
-                this.format(ajaxdata);
-            }
-        })
+
+        var hotss=window.localStorage.getItem('hotCities');
+        var allss=window.localStorage.getItem('allCities');
+        if(hotss && allss){
+           this.hots = JSON.parse(hotss);
+           this.cities = JSON.parse(allss);
+           this.isLoading = false;
+        }else{
+            this.axios.get('/api/cityList').then(res=>{
+                if(res.data.msg=='ok'){
+                    var ajaxdata = res.data.data.cities;
+                    this.format(ajaxdata);
+                }
+            })
+        }
     },
     methods : {
         format(ajaxdata){
@@ -68,6 +79,10 @@ export default {
             })
             this.hots = hotCities;
             this.cities = allCities;
+            this.isLoading = false;
+            window.localStorage.setItem('hotCities',JSON.stringify(hotCities));
+            window.localStorage.setItem('allCities',JSON.stringify(allCities));
+            
             function findSzm(item){
                 var itemSzm = item.py[0].toUpperCase();
                 for(var j=0;j<allCities.length;j++){
@@ -90,6 +105,12 @@ export default {
             var ps = document.querySelectorAll('.content>div>p:nth-of-type(1)');
             var y = -ps[index].offsetTop;
             this.$refs.scroller.scorllToTop(y)
+        },
+        chooseNowCity(nm,id){
+            window.localStorage.setItem('nowNm',nm);
+            window.localStorage.setItem('nowId',JSON.stringify(id));
+            this.$store.commit('nowCity/CHANGE_NOWCITY',{nm,id});
+            this.$router.push('/movie/nowplaying');
         }
     }
 }
@@ -98,6 +119,7 @@ export default {
 <style scoped>
     .bscroll{
         background: #ebebeb;
+        height: 525px;
     }
     .cityWraper{
         background: #ebebeb;

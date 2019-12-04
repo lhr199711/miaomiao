@@ -4,28 +4,33 @@
             <input v-model='text' placeholder="搜电影,搜影院"> 
             <span @touchstart='back'>取消</span>
         </div>
-        <div class="content" v-show='movies.list && text'>
-            <div>电影/电视剧/综艺</div>
-            <div v-for='item in movies.list' :key='item.id' class="item">
-                <img :src="item.img | setWH('64.90')" alt="">
-                <div style='width:54%;text-indent:8px;'>
-                    <h5 class="elipsis">{{item.nm}}</h5>
-                    <p  class="elipsis" v-if='item.enm'>{{item.enm}}</p>
-                    <p class="elipsis">{{item.cat}}</p>
-                    <p class="elipsis">{{item.rt}}</p>
-                </div>
-                <div class="want">
-                    <span v-if='item.globalReleased' class="span1" style="font-size:16px;">8.7分</span>
-                    <span v-if='!item.globalReleased' class="span2">
-                        <span style='font-weight:800;font-size:16px;'>{{item.wish}}</span>人想看
-                    </span>
-                    <span v-if='!item.globalReleased' class="span3">想看</span>
-                    
-                </div>
-            </div>
-            <p>查看全部{{movies.total}}部影视剧</p>
+        <div class="bscroll">
+            <Loading v-show="isLoading" />
+            <Scroller>
+                <div class="content" v-show='movies.list && text'>
+                    <div>电影/电视剧/综艺</div>
+                    <div v-for='item in movies.list' :key='item.id' class="item">
+                        <img :src="item.img | setWH('64.90')" alt="">
+                        <div style='width:54%;text-indent:8px;'>
+                            <h5 class="elipsis">{{item.nm}}</h5>
+                            <p  class="elipsis" v-if='item.enm'>{{item.enm}}</p>
+                            <p class="elipsis">{{item.cat}}</p>
+                            <p class="elipsis">{{item.rt}}</p>
+                        </div>
+                        <div class="want">
+                            <span v-if='item.globalReleased' class="span1" style="font-size:16px;">8.7分</span>
+                            <span v-if='!item.globalReleased' class="span2">
+                                <span style='font-weight:800;font-size:16px;'>{{item.wish}}</span>人想看
+                            </span>
+                            <span v-if='!item.globalReleased' class="span3">想看</span>
+                            
+                        </div>
+                    </div>
+                    <p>查看全部{{movies.total}}部影视剧</p>
+                </div>    
+            </Scroller>    
         </div>
-    </div>
+    </div>    
 </template>
 
 <script>
@@ -35,7 +40,8 @@ export default {
         return {
             text:'',
             movies : {},
-            timer : 0
+            timer : 0,
+            isLoading : false
         }
     },
     mounted(){
@@ -46,11 +52,13 @@ export default {
         text(v){
             this.movies = {};
             if(v){
+                this.isLoading = true;
                 clearTimeout(this.timer);
                 this.timer = setTimeout(()=>{
                     this.axios.get('/api/searchList?cityId=10&kw='+this.text).then(res=>{
                         if(Object.keys(res.data.data).length){
                             this.movies = res.data.data.movies;
+                            this.isLoading = false;
                         }  
                     })
                 },400) 
@@ -68,6 +76,17 @@ export default {
 </script>
 
 <style scoped>
+    .head{
+        position: sticky;
+        z-index: 100;
+        top:91px;
+        left: 0;
+        background: #f5f5f5;
+    }
+    .bscroll{
+        height: 476px;
+        background: #f5f5f5;
+    }
     .search-wraper{
         background: #f5f5f5;
         padding: 0 0 50px;

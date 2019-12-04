@@ -2,7 +2,7 @@
     <div>
         <Header></Header>
         <div class="nav">
-            <router-link tag='p' to='/movie/city'>城市</router-link>
+            <router-link tag='p' to='/movie/city' class="elipsis">{{$store.state.nowCity.nowNm}}</router-link>
             <router-link tag='p' to='/movie/nowplaying'>正在热映</router-link>
             <router-link tag='p' to='/movie/future'>即将上映</router-link>
             <router-link tag='p' to='/movie/search'>搜索</router-link>
@@ -64,6 +64,10 @@ export default {
         p{
             width: 25%;
             text-align: center;
+        }
+        p:nth-of-type(1){
+            box-sizing:border-box;
+            padding: 0 14px;
         }
         .router-link-active{
             color: red;
