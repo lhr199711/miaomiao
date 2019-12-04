@@ -1,5 +1,6 @@
 <template>
     <div class="bscroll">
+        <Loading v-show="isLoading" />
         <Scroller>
             <div class="future-wraper">
                 <div v-for='item in movies' :key='item.title'>
@@ -27,7 +28,8 @@ export default {
     name : 'Future',
     data(){
         return {
-            movies : []
+            movies : [],
+            isLoading : true
         }
     },
     mounted(){
@@ -37,6 +39,7 @@ export default {
                 if(res.data.msg == 'ok'){
                     var ajaxData = res.data.data.comingList;
                     this.fomatData(ajaxData);
+                    this.isLoading = false;
                 }
         })
     },

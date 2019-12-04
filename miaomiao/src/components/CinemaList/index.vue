@@ -1,5 +1,6 @@
 <template>
     <div class="bscroll">
+        <Loading />
         <Scroller>
             <div class='cinemaList-wraper'>
                 <div v-for='item in cinemas' :key='item.id' class="item">
@@ -31,8 +32,8 @@ export default {
     mounted(){
         var allh = window.screen.height;
         document.querySelector('.bscroll').style.height = allh-100+'px';
-        this.axios.get('/api/cinemaList?cityId=10').then(res=>{
-            if(res.data.msg == 'ok'){
+        this.axios.get('/api/cinemaList?cityId=1').then(res=>{
+            if(res.data.msg == 'ok' && res.data.data.cinemas){
                 var arr = res.data.data.cinemas;
                 for(var i=0;i<arr.length;i++){
                     for(var k in arr[i].tag){

@@ -1,5 +1,6 @@
 <template>
     <div class="bscroll">
+        <Loading v-show="isLoading" />
         <Scroller :handleToScroll='handleToScroll' :handleTotouchEnd='handleTotouchEnd'>
             <div class="nowPlaying-wraper">
                 <p>{{text}}</p>
@@ -27,13 +28,15 @@ export default {
     data(){
         return {
             movieList : [],
-            text : ''
+            text : '',
+            isLoading : true
         }
     },
     mounted(){
         this.axios.get('/api/movieOnInfoList?cityId=10').then(res=>{
             if(res.data.msg == 'ok'){
                 this.movieList = res.data.data.movieList;
+                this.isLoading = false;
                 // this.$nextTick(()=>{
                 //     var scorll =new BScroll(this.$refs.bscroll,{
                 //         tap : true,
@@ -106,14 +109,14 @@ export default {
     .blue{
         background:#3C9FE6;
     }
-    .bscroll{
-        height: 525px;
-    }
     .nowPlaying-wraper>p:nth-of-type(1){
         text-align: center;
         position: fixed;
         top: -10px;
         left:0;
         width: 100%;
+    }
+    .bscroll{
+        height: 525px;
     }
 </style>
