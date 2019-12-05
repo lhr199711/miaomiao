@@ -29,16 +29,20 @@ export default {
     data(){
         return {
             movies : [],
-            isLoading : true
+            isLoading : true,
+            prevCityId : -100
         }
     },
-    mounted(){
+    activated(){
+        if(this.$store.state.nowCity.nowId  == this.prevCityId){return;}
         var allh = window.screen.height;
         document.querySelector('.bscroll').style.height = allh-142+'px';
-        this.axios.get('/api/movieComingList?cityId=10').then(res=>{
-                if(res.data.msg == 'ok'){
+        this.isLoading = true;
+        this.axios.get('/api/movieComingList?cityId='+this.$store.state.nowCity.nowId).then(res=>{
+                if(res.data.msg == 'ok' && res.data.data.comingList){
                     var ajaxData = res.data.data.comingList;
                     this.fomatData(ajaxData);
+                    this.prevCityId = this.$store.state.nowCity.nowId;
                     this.isLoading = false;
                 }
         })
