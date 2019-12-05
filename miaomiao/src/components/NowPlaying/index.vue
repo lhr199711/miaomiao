@@ -2,7 +2,7 @@
     <div class="bscroll">
         <Loading v-show="isLoading" />
         <Scroller :handleToScroll='handleToScroll' :handleTotouchEnd='handleTotouchEnd'>
-            <div class="nowPlaying-wraper">
+            <div class="nowPlaying-wraper" id='lhr'>
                 <p>{{text}}</p>
                 <div v-for='item in movieList' :key='item.id'>
                     <img :src="item.img | setWH('64.90')" alt="">
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import {msgBox} from '@/components/JS';
 import BScroll from 'better-scroll';
 export default {
     name : 'NowPlaying',
@@ -29,13 +30,23 @@ export default {
         return {
             movieList : [],
             text : '',
-            isLoading : true
+            isLoading : true,
+            prevCityId : -100
         }
     },
-    mounted(){
-        this.axios.get('/api/movieOnInfoList?cityId=10').then(res=>{
+    activated(){
+        msgBox({
+            title : '城市',
+            content : '重庆',
+            cancel : '取消',
+            ok : '切换城市'
+        })
+        if(this.$store.state.nowCity.nowId == this.prevCityId){return;}
+        this.isLoading = true;
+        this.axios.get('/api/movieOnInfoList?cityId='+this.$store.state.nowCity.nowId).then(res=>{
             if(res.data.msg == 'ok'){
                 this.movieList = res.data.data.movieList;
+                this.prevCityId = this.$store.state.nowCity.nowId;
                 this.isLoading = false;
                 // this.$nextTick(()=>{
                 //     var scorll =new BScroll(this.$refs.bscroll,{
