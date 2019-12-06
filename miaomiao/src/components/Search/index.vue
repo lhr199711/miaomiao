@@ -55,13 +55,16 @@ export default {
                 this.isLoading = true;
                 clearTimeout(this.timer);
                 this.timer = setTimeout(()=>{
-                    this.axios.get('/api/searchList?cityId=10&kw='+this.text).then(res=>{
-                        if(Object.keys(res.data.data).length){
-                            this.movies = res.data.data.movies;
+                    this.axios.get('/ajax/ajax/search?kw=12'+this.text+'&cityId=1&stype=-1').then(res=>{
+
+                        if(Object.keys(res.data.movies).length){
+                            this.movies = res.data.movies;
                             this.isLoading = false;
                         }  
                     })
                 },400) 
+            }else{
+                this.isLoading = false;
             }
         }
     },
