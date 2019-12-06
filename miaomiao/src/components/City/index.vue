@@ -3,7 +3,7 @@
         <Loading v-if="isLoading" />
         <Scroller v-else ref='scroller'>
             <div class="cityWraper" style='transform: translate(0px, 0px) scale(1) translateZ(0px);'>
-                <div class="title">
+                <div class="title" v-if='hots.length'>
                     <p>热门城市</p>
                     <div>
                         <p v-for='item in hots' :key='item.id' @tap='chooseNowCity(item.nm,item.id)'>{{item.nm}}</p>
@@ -44,9 +44,9 @@ export default {
            this.cities = JSON.parse(allss);
            this.isLoading = false;
         }else{
-            this.axios.get('/api/cityList').then(res=>{
-                if(res.data.msg=='ok'){
-                    var ajaxdata = res.data.data.cities;
+            this.axios.get('/ajax/dianying/cities.json').then(res=>{
+                if(res.data.cts && res.data.cts.length){
+                    var ajaxdata = res.data.cts;
                     this.format(ajaxdata);
                 }
             })

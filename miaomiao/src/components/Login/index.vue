@@ -9,7 +9,12 @@
 
 <script>
 export default {
-    name : 'Login'
+    name : 'Login',
+    mounted(){
+        // this.axios.get('ajax/dianying/cities.json').then(res=>{
+        //     console.log(res);
+        // })
+    }
 }
 </script>
 

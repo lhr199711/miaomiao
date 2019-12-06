@@ -1,6 +1,6 @@
 <template>
     <div class="bscroll">
-        <Loading />
+        <Loading v-if='isLoading' />
         <Scroller>
             <div class='cinemaList-wraper'>
                 <div v-for='item in cinemas' :key='item.id' class="item">
@@ -26,15 +26,16 @@ export default {
     name : 'CinemaList',
     data(){
         return {
-            cinemas : []
+            cinemas : [],
+            isLoading : true
         }
     },
     mounted(){
         var allh = window.screen.height;
         document.querySelector('.bscroll').style.height = allh-100+'px';
-        this.axios.get('/api/cinemaList?cityId=1').then(res=>{
-            if(res.data.msg == 'ok' && res.data.data.cinemas){
-                var arr = res.data.data.cinemas;
+        this.axios.get('/ajax/ajax/cinemaList?&limit=20&cityId=1').then(res=>{
+            if(res.data.cinemas){
+                var arr = res.data.cinemas;
                 for(var i=0;i<arr.length;i++){
                     for(var k in arr[i].tag){
                         if(arr[i].tag[k] == 1){
@@ -50,6 +51,7 @@ export default {
                     }
                 }
                 this.cinemas = arr;
+                this.isLoading = false;
             }
         })
     },

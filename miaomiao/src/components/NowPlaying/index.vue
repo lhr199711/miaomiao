@@ -43,9 +43,9 @@ export default {
         })
         if(this.$store.state.nowCity.nowId == this.prevCityId){return;}
         this.isLoading = true;
-        this.axios.get('/api/movieOnInfoList?cityId='+this.$store.state.nowCity.nowId).then(res=>{
-            if(res.data.msg == 'ok'){
-                this.movieList = res.data.data.movieList;
+        this.axios.get('/ajax/ajax/movieOnInfoList?&ci=1').then(res=>{
+            if(res.data.movieList.length){
+                this.movieList = res.data.movieList;
                 this.prevCityId = this.$store.state.nowCity.nowId;
                 this.isLoading = false;
                 // this.$nextTick(()=>{

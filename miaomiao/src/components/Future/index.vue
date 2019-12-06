@@ -38,9 +38,9 @@ export default {
         var allh = window.screen.height;
         document.querySelector('.bscroll').style.height = allh-142+'px';
         this.isLoading = true;
-        this.axios.get('/api/movieComingList?cityId='+this.$store.state.nowCity.nowId).then(res=>{
-                if(res.data.msg == 'ok' && res.data.data.comingList){
-                    var ajaxData = res.data.data.comingList;
+        this.axios.get('/ajax/ajax/comingList?ci=1&token=').then(res=>{
+                if(res.data.coming && res.data.coming.length){
+                    var ajaxData = res.data.coming;
                     this.fomatData(ajaxData);
                     this.prevCityId = this.$store.state.nowCity.nowId;
                     this.isLoading = false;
