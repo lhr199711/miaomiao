@@ -1,6 +1,6 @@
 const state = {
-    nowNm : window.localStorage.getItem('nowNm') || '重庆',
-    nowId : JSON.parse(window.localStorage.getItem('nowId')) || 45
+    nowNm : window.localStorage.getItem('nowNm') || '北京',
+    nowId : JSON.parse(window.localStorage.getItem('nowId')) || 1
 }
 
 const mutations = {

@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import {msgBox} from '@/components/JS';
 import BScroll from 'better-scroll';
 export default {
     name : 'NowPlaying',
@@ -35,15 +34,9 @@ export default {
         }
     },
     activated(){
-        msgBox({
-            title : '城市',
-            content : '重庆',
-            cancel : '取消',
-            ok : '切换城市'
-        })
         if(this.$store.state.nowCity.nowId == this.prevCityId){return;}
         this.isLoading = true;
-        this.axios.get('/ajax/ajax/movieOnInfoList?&ci=1').then(res=>{
+        this.axios.get('/ajax/ajax/movieOnInfoList?&ci='+this.$store.state.nowCity.nowId).then(res=>{
             if(res.data.movieList.length){
                 this.movieList = res.data.movieList;
                 this.prevCityId = this.$store.state.nowCity.nowId;
