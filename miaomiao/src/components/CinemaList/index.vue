@@ -27,13 +27,16 @@ export default {
     data(){
         return {
             cinemas : [],
-            isLoading : true
+            isLoading : true,
+            prevId : -100
         }
     },
-    mounted(){
+    activated(){
+        if(this.prevId == this.$store.state.nowCity.nowId){return;}
         var allh = window.screen.height;
         document.querySelector('.bscroll').style.height = allh-100+'px';
-        this.axios.get('/ajax/ajax/cinemaList?&limit=20&cityId=1').then(res=>{
+        this.isLoading = true;
+        this.axios.get('/ajax/ajax/cinemaList?&limit=20&cityId='+this.$store.state.nowCity.nowId).then(res=>{
             if(res.data.cinemas){
                 var arr = res.data.cinemas;
                 for(var i=0;i<arr.length;i++){
@@ -51,6 +54,7 @@ export default {
                     }
                 }
                 this.cinemas = arr;
+                this.prevId = this.$store.state.nowCity.nowId;
                 this.isLoading = false;
             }
         })
