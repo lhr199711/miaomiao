@@ -10,7 +10,9 @@
         <keep-alive>
             <router-view></router-view>
         </keep-alive>
-        <TabBar></TabBar> 
+        <TabBar></TabBar>
+
+        <router-view name="detail"></router-view>
     </div>
 </template>
 
@@ -28,18 +30,20 @@ export default {
             var vm = this;
             if(res.data.data.id){
                 if(res.data.data.id != this.$store.state.nowCity.nowId){
-                    msgBox({
-                        title : '城市定位',
-                        content : res.data.data.nm,
-                        cancel : '取消',
-                        ok : '切换城市',
-                        okfn(){
-                            window.localStorage.setItem('nowNm',res.data.data.nm);
-                            window.localStorage.setItem('nowId',res.data.data.id+'');
-                            vm.$store.commit('nowCity/CHANGE_NOWCITY',res.data.data);
-                            window.location.reload();
-                        }
-                    });
+                    setTimeout(() => {
+                        msgBox({
+                            title : '城市定位',
+                            content : res.data.data.nm,
+                            cancel : '取消',
+                            ok : '切换城市',
+                            okfn(){
+                                window.localStorage.setItem('nowNm',res.data.data.nm);
+                                window.localStorage.setItem('nowId',res.data.data.id+'');
+                                vm.$store.commit('nowCity/CHANGE_NOWCITY',res.data.data);
+                                window.location.reload();
+                            }
+                        });
+                    }, 2000);
                 }
             }
         })

@@ -1,6 +1,6 @@
 <template>
     <div class="header-wraper">
-        {{title}}
+        <div @touchstart='clickfn'><slot></slot></div>{{title}}
     </div>
 </template>
 
@@ -11,6 +11,11 @@ export default {
         title : {
             type : String,
             default : '写着玩的'
+        }
+    },
+    methods : {
+        clickfn(){
+            window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/movie/nowplaying');
         }
     }
 }
@@ -28,5 +33,22 @@ export default {
         left: 0;
         width: 100%;
         z-index: 999;
+    }
+    .header-wraper>div{
+        position: absolute;
+        left: 20px;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+    }
+    .header-wraper span{
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border-bottom: 2px solid #fff;
+        border-left: 2px solid #fff;
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+        
     }
 </style>
