@@ -2,12 +2,12 @@
     <div class="bscroll">
         <Loading v-show="isLoading" />
         <Scroller>
-            <div class="future-wraper">
+            <div class="future-wraper" style="transform: translate(0px, 0px) scale(1) translateZ(0px)">
                 <div v-for='item in movies' :key='item.title'>
                     <h5>{{item.title}}</h5>
                     <div class="item" v-for='k in item.movieList' :key='k.id'>
                         <img :src="k.img | setWH('64.90')" alt="">
-                        <div>
+                        <div @tap='toDetail(k.id)'>
                             <p class="elipsis">{{k.nm}}</p>
                             <p class="elipsis"><span class="yellow">{{k.wish}}</span>人想看</p>
                             <p class="elipsis">主演:{{k.star}}</p>
@@ -71,6 +71,9 @@ export default {
                 }
                 return false;
             }
+        },
+        toDetail(movieId){
+            this.$router.push('/movie/detail/jjsy/'+ movieId);
         }
     }
 }
@@ -92,6 +95,10 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+    .future-wraper .item>img{
+        width: 64px;
+        height: 90px;
     }
     .future-wraper .item>div{
         width: 62%;

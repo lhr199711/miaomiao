@@ -2,7 +2,7 @@
     <div class="bscroll">
         <Loading v-if='isLoading' />
         <Scroller>
-            <div class='cinemaList-wraper'>
+            <div class='cinemaList-wraper' style="transform: translate(0px, 0px) scale(1) translateZ(0px)">
                 <div v-for='item in cinemas' :key='item.id' class="item">
                     <div class="elipsis">{{item.nm}} <span style="font-size:12px;"><span style="font-size:18px;">{{item.sellPrice}}</span>元起</span></div>
                     <div>

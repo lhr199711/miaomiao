@@ -2,11 +2,11 @@
     <div class="bscroll">
         <Loading v-show="isLoading" />
         <Scroller :handleToScroll='handleToScroll' :handleTotouchEnd='handleTotouchEnd'>
-            <div class="nowPlaying-wraper" id='lhr'>
+            <div class="nowPlaying-wraper" id='lhr' style="transform: translate(0px, 0px) scale(1) translateZ(0px)">
                 <p>{{text}}</p>
                 <div v-for='item in movieList' :key='item.id'>
                     <img :src="item.img | setWH('64.90')" alt="">
-                    <div>
+                    <div @tap='toDetail(item.id)'>
                         <p class="elipsis">{{item.nm}}</p>
                         <p class="elipsis" v-if="item.globalReleased && item.sc">观众评 <span class="yellow">{{item.sc}}</span></p>
                         <p class="elipsis" v-if="item.globalReleased && !item.sc">暂无评分</p>
@@ -72,6 +72,9 @@ export default {
             setTimeout(()=>{
                 this.text = ""
             },1000)
+        },
+        toDetail(movieId){
+            this.$router.push('/movie/detail/zzry/'+ movieId);
         }
     }
 }
@@ -116,7 +119,7 @@ export default {
     .nowPlaying-wraper>p:nth-of-type(1){
         text-align: center;
         position: fixed;
-        top: -10px;
+        top: -20px;
         left:0;
         width: 100%;
     }

@@ -18,6 +18,26 @@ export default {
         {
             path : 'search',
             component : ()=>import('@/components/Search')
+        },
+        {
+            path : 'detail/zzry/:movieId',
+            components: {
+                default: () => import('@/components/NowPlaying'),
+                detail : ()=>import('@/views/Movie/detail')
+            },
+            props: {
+                detail : true
+            }
+        },
+        {
+            path : 'detail/jjsy/:movieId',
+            components: {
+                default: () => import('@/components/Future'),
+                detail : ()=>import('@/views/Movie/detail')
+            },
+            props: {
+                detail : true
+            }
         }
     ]
 }
