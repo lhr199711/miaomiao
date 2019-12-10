@@ -1,5 +1,5 @@
 module.exports = {
-    // publicPath : '/miaomiao', //调整静态资源路径
+    publicPath : '/lhr', //调整静态资源路径
     devServer : {
         open : true,
         https: false,
