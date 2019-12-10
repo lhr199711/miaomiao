@@ -35,6 +35,8 @@ export default {
     },
     activated(){
         if(this.$store.state.nowCity.nowId == this.prevCityId){return;}
+        var allh = window.screen.height;
+        document.querySelector('.bscroll').style.height = allh-142+"px";
         this.isLoading = true;
         this.axios.get('/ajax/ajax/movieOnInfoList?&ci='+this.$store.state.nowCity.nowId).then(res=>{
             if(res.data.movieList.length){
@@ -122,8 +124,5 @@ export default {
         top: -20px;
         left:0;
         width: 100%;
-    }
-    .bscroll{
-        height: 525px;
     }
 </style>

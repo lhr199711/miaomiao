@@ -45,8 +45,8 @@ export default {
         }
     },
     mounted(){
-        var h = window.innerHeight;
-        document.querySelector('.search-wraper').style.minHeight= h-142+'px';
+        var allh = window.screen.height;
+        document.querySelector('.bscroll').style.height = allh-142-49+'px';
     },
     watch : {
         text(v){
