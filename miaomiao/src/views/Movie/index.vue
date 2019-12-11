@@ -26,27 +26,27 @@ export default {
         }
     },
     mounted(){
-        this.axios.get('/api/getLocation').then(res=>{
+            var id = 45;
+            var nm = "重庆";
             var vm = this;
-            if(res.data.data.id){
-                if(res.data.data.id != this.$store.state.nowCity.nowId){
-                    setTimeout(() => {
-                        msgBox({
-                            title : '城市定位',
-                            content : res.data.data.nm,
-                            cancel : '取消',
-                            ok : '切换城市',
-                            okfn(){
-                                window.localStorage.setItem('nowNm',res.data.data.nm);
-                                window.localStorage.setItem('nowId',res.data.data.id+'');
-                                vm.$store.commit('nowCity/CHANGE_NOWCITY',res.data.data);
-                                window.location.reload();
-                            }
-                        });
-                    }, 2000);
-                }
+            if(id != this.$store.state.nowCity.nowId){
+                setTimeout(() => {
+                    msgBox({
+                        title : '城市定位',
+                        content : nm,
+                        cancel : '取消',
+                        ok : '切换城市',
+                        okfn(){
+                            window.localStorage.setItem('nowNm',nm);
+                            window.localStorage.setItem('nowId',id+'');
+                            vm.$store.commit('nowCity/CHANGE_NOWCITY',{"nm":"重庆","id":45});
+                            window.location.reload();
+                        }
+                    });
+                }, 2000);
             }
-        })
+            
+        
     },
     beforeRouteLeave (to, from, next) {
         this.prevPath = from.path;

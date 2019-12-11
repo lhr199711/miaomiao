@@ -3,24 +3,27 @@ module.exports = {
     devServer : {
         open : true,
         https: false,
-        hotOnly: false,
         proxy : {
             // '/api2':{         //这里要注意代理本地的要写在上面
             //     target : 'http://localhost:3000',
             //     changeOrigin : true
             // },
             '/ajax':{
-                target : 'http://m.maoyan.com/',
+                target : 'http://m.maoyan.com',
                 ws:true,
                 changeOrigin : true,
                 pathRewrite:{
-                    '^/ajax': '/'
+                    '^/ajax': '/'   // 用 /ajax 代替http://m.maoyan.com,
                 }
             },
-            '/api':{
-                target : 'http://39.97.33.178',
-                changeOrigin : true
-            }
+    //         '/api':{
+    //             target : 'http://39.97.33.178',
+    //             ws:true,
+    //             changeOrigin : true,
+    //             pathRewrite:{
+    //                 '^/api': '/'  
+    //             }
+    //         }
             
         }
     }
