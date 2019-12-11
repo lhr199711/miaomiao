@@ -37,8 +37,8 @@ export default {
         if(this.$store.state.nowCity.nowId  == this.prevCityId){return;}
         var allh = window.screen.height;
         document.querySelector('.bscroll').style.height = allh-142+'px';
-        this.isLoading = true;
-        this.axios.get('/ajax/ajax/comingList?ci=1&token=').then(res=>{
+        this.isLoading = true; 
+        this.axios.get('/ajax/ajax/comingList?ci=1&token=&limit=10').then(res=>{
                 if(res.data.coming && res.data.coming.length){
                     var ajaxData = res.data.coming;
                     this.fomatData(ajaxData);

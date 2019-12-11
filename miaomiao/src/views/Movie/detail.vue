@@ -14,10 +14,25 @@
             </div>
         </div>  -->
         <h3>这个页面接口经常炸T_T</h3>
-        <div class="swiper-container" ref="lhrcontaier">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide" v-for='i in 20' :key="i">{{i}}</div>
-            </div>
+        <div class="bscroll">
+            <Scroller>
+                <div class="lhr">
+                    <div class="swiper-container" ref="lhrcontaier">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" v-for='i in 20' :key="i">{{i}}</div>
+                        </div>
+                    </div>
+                    <div class="son">1</div>
+                    <div class="son">2</div>
+                    <div class="son">3</div>
+                    <div class="son">4</div>
+                    <div class="son">5</div>
+                    <div class="son">6</div>
+                    <div class="son">7</div>
+                    <div class="son">8</div>
+                    <div class="son">9</div>  
+                </div>
+            </Scroller>
         </div>
     </div>
 </template>
@@ -44,18 +59,24 @@ export default {
         //         this.detailMovie = res.data.detailMovie;
         //     }
         // })
+    },
+    methods : {
+
     }
 }
 </script>
 
 <style scoped>
+    .bscroll{
+        height: 576px;
+    }
     .detail-wraper{
-        min-height: 100%;
+        height: 100%;
         position: fixed;
         top: 0;
         left:0;
         width: 100%;
-        z-index: 10000;
+        z-index: 1000;
         background: #fff;
         animation: moveLeft .3s;
     }
@@ -68,6 +89,12 @@ export default {
         line-height: 40px;
         color: red;
         border-bottom: 1px dotted red;
+        position: sticky;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        z-index: 2000;
+        background: #fff;
     }
     .swiper-wrapper>div{
         height: 100px;
@@ -77,6 +104,14 @@ export default {
     }
     .swiper-wrapper>div:nth-of-type(2n-1){
         background: purple;
+    }
+    .lhr{
+        background: pink;
+    }
+    .lhr .son{
+        line-height: 100px;
+        font-size: 30px;
+        font-weight: 800;
     }
     /* .imgs{
         position: relative;
