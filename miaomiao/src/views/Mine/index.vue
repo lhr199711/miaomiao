@@ -1,18 +1,14 @@
 <template>
     <div>
-        <Header title='我的'></Header>
-        <Login/>   
+        <Header title='我的'></Header>  
+        <router-view></router-view>
         <TabBar></TabBar> 
     </div>
 </template>
 
 <script>
-import Login from '@/components/Login';
 export default {
-    name:'Mine',
-    components : {
-        Login
-    }
+    name:'Mine'
 }
 </script>
 
