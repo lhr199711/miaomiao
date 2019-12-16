@@ -5,7 +5,7 @@ export var msgBox = (function(){
     
     return function(opts){ //外部将调用这个方法
 
-        var defaults = {
+        var defaults = {        //必须写在这里，原因跟vue中的data需要return{}类似
             title : '默认',
             content : '默认',
             cancel : '默认',

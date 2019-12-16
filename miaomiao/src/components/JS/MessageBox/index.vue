@@ -3,7 +3,7 @@
         <h4>{{title}}</h4>
         <p>{{content}}</p>
         <div>
-            <div @touchstart='cancelfn'>{{cancel}}</div>
+            <div v-if="cancel!='默认'" @touchstart='cancelfn'>{{cancel}}</div>
             <div @touchstart='okfn'>{{ok}}</div>
         </div>
     </div>
