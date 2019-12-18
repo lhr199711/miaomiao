@@ -81,7 +81,7 @@ export default {
 <style scoped>
     .item{
         border-bottom: 1px solid #f5f5f5;
-        padding: 13px 30px 13px 15px;
+        padding: 13px 20px 13px 15px;
     }
     .item>div:nth-of-type(1){
         color: #333;
@@ -107,7 +107,7 @@ export default {
     .item>div:nth-of-type(3)>span{
         display: inline-block;
         font-size: 12px;
-        margin-right: 4px;
+        margin-right: 1px;
         padding: 0 3px;
     }
     .item>.card{

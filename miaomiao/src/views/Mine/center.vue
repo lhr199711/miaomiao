@@ -8,6 +8,7 @@
         <h4>我的操作</h4>
         <div class="operation">
             <div @touchstart="logoutfn">退出</div>
+            <div @touchstart="findPS">修改密码</div>
         </div>
     </div>
 </template>
@@ -22,37 +23,39 @@ export default {
             
         }
     },
-    mounted(){
-      
-    },
     methods : {
         logoutfn(){
             this.axios.get('/api2/api2/users/logout').then(res=>{
                 if(res.data.status == 0){
                     var vm = this;
+                    var date=new Date();
+                    date.setTime(date.getTime()-60*60*1000);   //cookie设置一小时的过期时间
+                    document.cookie="nowUser="+this.username+";path=/;expires="+date.toGMTString(); 
+                    this.$store.commit('nowUser/CHANGE_USERNAME',{username:""});
                     msgBox({
                         title : '登出',
                         content : '退出登录成功',
                         ok : '确定',
                         okfn(){
-                            vm.$store.commit('nowUser/CHANGE_USERNAME',{username:""})
                             vm.$router.push('/mine/login')
                         }
                     })
                 }
             })
-        }
+        },
+        findPS(){
+            this.$router.push('/mine/findPassword')
+        }  
     },
     beforeRouteEnter (to, from, next) {
-        axios.get('/api2/api2/users/getUser').then(res=>{
-            if(res.data.status == 0){
-                next(vm=>{
-                    vm.$store.commit('nowUser/CHANGE_USERNAME',{username:res.data.data.username})
-                })
-            }else{
-                next('/mine/login')
-            }
-        })
+       var allcookie = document.cookie;
+       if(allcookie.indexOf("nowUser") == -1){
+           next(vm=>{
+               vm.$router.push('/mine/login')
+           })
+       }else{
+           next()
+       }
     }
 }
 </script>

@@ -27,7 +27,7 @@ export default {
         z-index: 9999;
         text-align: center;
         line-height: 40px;
-        box-shadow: 3px 3px 3px 3px #ccc;
+        box-shadow: 0px 0px 4px 4px #ccc;
         border-radius: 4px;
         p{
             line-height: 70px;
