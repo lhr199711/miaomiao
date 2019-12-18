@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import {msgBox} from '@/components/JS';
 export default {
     name : 'Login',
@@ -22,15 +23,21 @@ export default {
             password : ''
         }
     },
+    mounted(){
+        
+    },
     methods : {
         loginfn(){
-            
             this.axios.post('/api2/api2/users/login',{
                 username : this.username,
                 password : this.password
             }).then((res)=>{
                 if(res.data.status == 0){
                     var vm = this;
+                    var date=new Date();
+                    date.setTime(date.getTime()+60*60*1000);   //cookie设置一小时的过期时间
+                    document.cookie="nowUser="+this.username+";path=/;expires="+date.toGMTString(); 
+                    this.$store.commit('nowUser/CHANGE_USERNAME',{username:this.username});
                     msgBox({
                         title : '登录',
                         content : '登录成功',
@@ -56,6 +63,16 @@ export default {
         findPs(){
             this.$router.push('/mine/findPassword')
         }
+    },
+    beforeRouteEnter (to, from, next) {
+       var allcookie = document.cookie;
+       if(allcookie.indexOf("nowUser") == -1){
+           next()
+       }else{
+           next(vm=>{
+               vm.$router.push('/mine/center')
+           })
+       }
     }
 }
 </script>

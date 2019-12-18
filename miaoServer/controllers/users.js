@@ -5,8 +5,9 @@ var login = async (req,res,next)=>{
 
     var {username,password} = req.body;
     var result = await UserModel.findLogin({username,password});
-    if(result){
+    if(result){     //这个result返回的是整个用户信息对象
         req.session.username = username;
+        req.session.isAdmin = result.isAdmin;
         res.send({
             msg : '登录成功',
             status : 0
@@ -23,13 +24,13 @@ var register = async (req,res,next)=>{
 
     var {username,password,email,verify} = req.body;
 
-    if(email !== req.session.email || verify !==req.session.verify){
+    if(email != req.session.email || verify !=req.session.verify){
         res.send({
             msg : '验证码错误',
             status : -1
         })
+        return;
     }
-
     var result = await UserModel.save({
         username,
         password,
@@ -117,10 +118,20 @@ var findPassword = async (req,res,next)=>{
         
         var result = await UserModel.findPassword(email,password);
         if(result){
-            res.send({
-                msg : '修改密码成功',
-                status : 0
-            })
+            if(req.session.username){
+                req.session.username = '';
+                res.send({
+                    msg : '修改密码成功',
+                    status : 0,
+                    online : true
+                })
+            }else{
+                res.send({
+                    msg : '修改密码成功',
+                    status : 0,
+                    online : false
+                })
+            }
         }else{
             res.send({
                 msg : '修改密码失败',
