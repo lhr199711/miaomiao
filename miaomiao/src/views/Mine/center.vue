@@ -3,12 +3,13 @@
         <h4>我的</h4>
         <div class="headPortrait">
             <div></div>
-            <p>{{$store.state.nowUser.username}}</p>
+            <p>{{$store.state.nowUser.isAdmin?"管理员":"普通用户"}}:{{$store.state.nowUser.username}}</p>
         </div>
         <h4>我的操作</h4>
         <div class="operation">
             <div @touchstart="logoutfn">退出</div>
             <div @touchstart="findPS">修改密码</div>
+            <a v-if="$store.state.nowUser.isAdmin" href="/lhr/admin" target="_blank">管理员页</a>
         </div>
     </div>
 </template>
@@ -31,7 +32,8 @@ export default {
                     var date=new Date();
                     date.setTime(date.getTime()-60*60*1000);   //cookie设置一小时的过期时间
                     document.cookie="nowUser="+this.username+";path=/;expires="+date.toGMTString(); 
-                    this.$store.commit('nowUser/CHANGE_USERNAME',{username:""});
+                    document.cookie="isAdmin=false;path=/;expires="+date.toGMTString(); 
+                    this.$store.commit('nowUser/CHANGE_USERNAME',{username:"",isAdmin:false});
                     msgBox({
                         title : '登出',
                         content : '退出登录成功',
@@ -45,7 +47,7 @@ export default {
         },
         findPS(){
             this.$router.push('/mine/findPassword')
-        }  
+        } 
     },
     beforeRouteEnter (to, from, next) {
        var allcookie = document.cookie;
@@ -83,6 +85,14 @@ export default {
         flex-wrap: wrap;
     }
     .operation>div{
+        text-align: center;
+        width: 25%;
+        box-sizing: border-box;
+        padding: 6px 10px;
+        color : #fe8c00;
+    }
+    .operation>a{
+        display: block;
         text-align: center;
         width: 25%;
         box-sizing: border-box;

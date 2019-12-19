@@ -10,6 +10,7 @@ var login = async (req,res,next)=>{
         req.session.isAdmin = result.isAdmin;
         res.send({
             msg : '登录成功',
+            isAdmin : result.isAdmin,
             status : 0
         })
     }else{

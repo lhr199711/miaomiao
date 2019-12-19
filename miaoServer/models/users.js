@@ -9,7 +9,7 @@ var UserSchema = new mongoose.Schema({
     isAdmin : { type : Boolean , default : false }
 })
 
-var UserModel = mongoose.model('user',UserSchema); //这个user是表名，注意在数据库中很可能变成复数
+var UserModel = mongoose.model('users',UserSchema); //这个user是表名，注意在数据库中很可能变成复数
 UserModel.createIndexes();        //为了让index值生效
 
 var save = (data)=>{   //对数据库的操作方法（固定）这些方法也写在models里面。
