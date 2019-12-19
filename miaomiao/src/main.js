@@ -17,8 +17,9 @@ Vue.component('TabBar',TabBar)
 Vue.component('Loading',Loading)
 
 Vue.filter('setWH',(oldV,newV)=>{
-    return oldV.replace(/w\.h/,newV)
+  return oldV.replace(/w\.h/,newV)
 })
+
 
 new Vue({
   router,

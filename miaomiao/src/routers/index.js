@@ -5,6 +5,7 @@ Vue.use(VueRouter)
 import cinemaRouter from './cinema'
 import mineRouter from './mine'
 import movieRouter from './movie'
+import adminRouter from './admin'
 
 const originalPush = VueRouter.prototype.push; //解决报错而已
 VueRouter.prototype.push = function push(location) {
@@ -15,6 +16,7 @@ const routes = [
   cinemaRouter,
   mineRouter,
   movieRouter,
+  adminRouter,
   {
     path : '/*',
     redirect : '/movie'

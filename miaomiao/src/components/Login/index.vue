@@ -37,7 +37,8 @@ export default {
                     var date=new Date();
                     date.setTime(date.getTime()+60*60*1000);   //cookie设置一小时的过期时间
                     document.cookie="nowUser="+this.username+";path=/;expires="+date.toGMTString(); 
-                    this.$store.commit('nowUser/CHANGE_USERNAME',{username:this.username});
+                    document.cookie="isAdmin="+res.data.isAdmin+";path=/;expires="+date.toGMTString(); 
+                    this.$store.commit('nowUser/CHANGE_USERNAME',{username:this.username,isAdmin:res.data.isAdmin});
                     msgBox({
                         title : '登录',
                         content : '登录成功',
