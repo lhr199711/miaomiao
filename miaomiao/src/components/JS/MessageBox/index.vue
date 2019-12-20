@@ -21,7 +21,7 @@ export default {
         height: 150px;
         background:#fff;
         position: absolute;
-        top:40%;
+        top:30%;
         left: 50%;
         transform: translate(-50%,-50%);
         z-index: 9999;

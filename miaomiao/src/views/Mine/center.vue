@@ -7,9 +7,9 @@
         </div>
         <h4>我的操作</h4>
         <div class="operation">
-            <div @touchstart="logoutfn">退出</div>
-            <div @touchstart="findPS">修改密码</div>
-            <a v-if="$store.state.nowUser.isAdmin" href="/lhr/admin" target="_blank">管理员页</a>
+            <div @touchstart="logoutfn"><i class="el-icon-circle-close"></i>退出</div>
+            <div @touchstart="findPS"><i class="el-icon-unlock"></i>修改密码</div>
+            <a v-if="$store.state.nowUser.isAdmin" href="/lhr/admin" target="_blank"><i class="el-icon-s-custom"></i>管理员页</a>
         </div>
     </div>
 </template>
@@ -98,5 +98,9 @@ export default {
         box-sizing: border-box;
         padding: 6px 10px;
         color : #fe8c00;
+    }
+    i{
+        display: block;
+        font-size: 30px;
     }
 </style>
