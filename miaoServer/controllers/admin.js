@@ -1,3 +1,5 @@
+var UserModel = require('../models/users.js');
+
 var index = async (req,res,next)=>{
     res.send({
         msg : '管理员权限',
@@ -5,6 +7,57 @@ var index = async (req,res,next)=>{
     })
 } 
 
+var usersList = async (req,res,next)=>{
+    var result = await UserModel.usersList();
+    if(result){
+        res.send({
+            msg : '获取用户列表成功',
+            status : 0,
+            data : result
+        })
+    }else{
+        res.send({
+            msg : '获取用户列表失败',
+            status : -1
+        })
+    }
+}
+
+var updateFreeze = async (req,res,next)=>{
+    var {email,isFreeze} = req.body;
+    var result = await UserModel.updateFreeze(email,isFreeze);
+    if(result){
+        res.send({
+            msg : '冻结或解冻成功',
+            status : 0
+        })
+    }else{
+        res.send({
+            msg : '冻结或解冻失败',
+            status : -1
+        })
+    }
+}
+
+var deleteOneUser = async (req,res,next)=>{
+    var {email} = req.body;
+    var result = await UserModel.deleteOneUser(email);
+    if(result){
+        res.send({
+            msg : ' 用户删除成功',
+            status : 0
+        })
+    }else{
+        res.send({
+            msg : ' 用户删除失败',
+            status : -1
+        })
+    }
+}
+
 module.exports = {
-    index
+    index,
+    usersList,
+    updateFreeze,
+    deleteOneUser
 }

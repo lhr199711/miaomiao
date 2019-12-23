@@ -6,7 +6,8 @@ var UserSchema = new mongoose.Schema({
     password : {type : String, required : true},
     email : {type : String, required : true, index : {unique:true}},
     date : { type : Date , default : Date.now()},
-    isAdmin : { type : Boolean , default : false }
+    isAdmin : { type : Boolean , default : false },
+    isFreeze : {type : Boolean , default : false}
 })
 
 var UserModel = mongoose.model('users',UserSchema); //这个user是表名，注意在数据库中很可能变成复数
@@ -38,8 +39,29 @@ var findPassword = (email,password)=>{
                     })
 }
 
+var usersList = ()=>{
+    return UserModel.find();
+}
+
+var updateFreeze = (email,isFreeze)=>{
+    return UserModel.update({email},{ $set:{isFreeze} })
+                    .then(()=>{
+                        return true;
+                    })
+                    .catch(()=>{
+                        return false;
+                    })
+}
+
+var deleteOneUser = (email)=>{
+    return UserModel.deleteOne({ email });
+}
+
 module.exports = {        //注意这个对象
     save,
     findLogin,
-    findPassword
+    findPassword,
+    usersList,
+    updateFreeze,
+    deleteOneUser
 }

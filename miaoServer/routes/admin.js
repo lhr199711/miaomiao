@@ -17,6 +17,9 @@ router.use((req,res,next)=>{      //路由拦截
 
 // /* GET users listing. */    他是基于/api2/admin这个路径的 注意
 router.get('/', adminController.index);
+router.get('/usersList', adminController.usersList);
+router.post('/updateFreeze', adminController.updateFreeze);
+router.post('/deleteOneUser', adminController.deleteOneUser);
 
 
 module.exports = router;

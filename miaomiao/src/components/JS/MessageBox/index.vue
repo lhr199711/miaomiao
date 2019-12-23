@@ -31,7 +31,7 @@ export default {
         border-radius: 4px;
         p{
             line-height: 70px;
-            font-size: 20px;
+            font-size: 17px;
             border-top:1px solid #ccc;
             border-bottom:1px solid #ccc;
         }

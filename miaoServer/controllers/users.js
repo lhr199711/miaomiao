@@ -8,14 +8,22 @@ var login = async (req,res,next)=>{
     if(result){     //这个result返回的是整个用户信息对象
         req.session.username = username;
         req.session.isAdmin = result.isAdmin;
-        res.send({
-            msg : '登录成功',
-            isAdmin : result.isAdmin,
-            status : 0
-        })
+        if(result.isFreeze){
+            res.send({
+                msg : '帐号被冻结',
+                status : -1
+            })
+        }else{
+            res.send({
+                msg : '登录成功',
+                isAdmin : result.isAdmin,
+                status : 0
+            })
+        }
+        
     }else{
         res.send({
-            msg : '登录失败',
+            msg : '密码错误或帐号不存在',
             status: -3
         })
     }
