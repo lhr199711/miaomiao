@@ -100,6 +100,9 @@ export default {
 </script>
 
 <style scoped>
+.SlideBar-index{
+    min-height: 100%;
+}
 .el-header, .el-footer {
     background-color:#252b3a;
     color: #fff;
@@ -122,9 +125,6 @@ export default {
     color: #333;
   }
   
-  body > .el-container {
-    margin-bottom: 40px;
-  }
   .el-menu{
       border:0;
   }

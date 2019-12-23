@@ -23,7 +23,7 @@ export default {
             path : 'detail/zzry/:movieId',
             components: {
                 default: () => import('@/components/NowPlaying'),
-                detail : ()=>import('@/views/Movie/detail')
+                detail : ()=>import('@/views/Movie/detail')    //这个detail是视图名
             },
             props: {
                 detail : true

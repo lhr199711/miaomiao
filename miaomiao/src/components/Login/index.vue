@@ -51,7 +51,7 @@ export default {
                 }else{
                     msgBox({
                         title : '登录',
-                        content : '登录失败',
+                        content : res.data.msg,
                         ok: '确定',
                         cancel : '取消'
                     })

@@ -31,7 +31,8 @@ export default {
             username : '',
             email : '',
             password : '',
-            verify : ''
+            verify : '',
+            verifyLock : true
         }
     },
     methods : {
