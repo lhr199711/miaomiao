@@ -1,10 +1,20 @@
 var {Email} = require('../untils/config.js');
 var UserModel = require('../models/users.js');
+var {toPassword,getVerifyImg} = require('../untils/base.js');
 
 var login = async (req,res,next)=>{
 
-    var {username,password} = req.body;
-    var result = await UserModel.findLogin({username,password});
+    var {username,password,verify} = req.body;
+
+    if(verify != req.session.imgToken){
+        res.send({
+            msg : '验证码错误',
+            status : -1
+        })
+        return;
+    }
+
+    var result = await UserModel.findLogin({username,password:toPassword(password)});
     if(result){     //这个result返回的是整个用户信息对象
         req.session.username = username;
         req.session.isAdmin = result.isAdmin;
@@ -40,9 +50,18 @@ var register = async (req,res,next)=>{
         })
         return;
     }
+
+    if((Email.time-req.session.verifyTime)/1000 >60){
+        res.send({
+            msg : '验证码已过期',
+            status : -1
+        })
+        return;
+    }
+
     var result = await UserModel.save({
         username,
-        password,
+        password : toPassword(password),
         email
     })
 
@@ -67,6 +86,7 @@ var verify = async (req,res,next)=>{
 
     req.session.verify = verify;
     req.session.email = email;
+    req.session.verifyTime = Email.time;
 
     Email.transporter.sendMail({
         from: '"来自一位刘姓帅哥👻👻👻" <1066521901@qq.com>', // sender address
@@ -125,7 +145,15 @@ var findPassword = async (req,res,next)=>{
     var {email,password,verify} = req.body;
     if(email == req.session.email && verify == req.session.verify){
         
-        var result = await UserModel.findPassword(email,password);
+        if((Email.time-req.session.verifyTime)/1000 >60){
+            res.send({
+                msg : '验证码已过期',
+                status : -1
+            })
+            return;
+        }
+
+        var result = await UserModel.findPassword(email,toPassword(password));
         if(result){
             if(req.session.username){
                 req.session.username = '';
@@ -157,11 +185,22 @@ var findPassword = async (req,res,next)=>{
 
 }
 
+var verifyImg = async (req,res,next)=>{
+
+    var result = await getVerifyImg();   //result是一个对象内同buffer和token字段
+    if(result){
+        req.session.imgToken = result.token;
+        res.send(result.buffer);
+    }
+    
+}
+
 module.exports = {
     login,
     register,
     verify,
     logout,
     getUser,
-    findPassword
+    findPassword,
+    verifyImg
 }

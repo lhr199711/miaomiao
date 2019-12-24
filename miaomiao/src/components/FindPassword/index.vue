@@ -7,7 +7,7 @@
             <div class="email">
                 <input v-model='verify' placeholder="请输入验证码" maxlength="4">
                 <div @touchstart='sendVerify'>
-                    获取验证码
+                    {{text}}
                 </div>
             </div>
         </form>
@@ -29,7 +29,9 @@ export default {
         return {
             email : '',
             password : '',
-            verify : ''
+            verify : '',
+            text : '获取验证码',
+            verifyLock : false
         }
     },
     methods : {
@@ -41,21 +43,35 @@ export default {
                     ok : '确定'
                 })
             }else{
-                this.axios.get('/api2/api2/users/verify?email='+this.email).then(res=>{
-                    if(res.data.status == 0){
-                        msgBox({
-                            title : '验证码',
-                            content : '验证码发送成功',
-                            ok : '确定'
-                        })
-                    }else{
-                        msgBox({
-                            title : '验证码',
-                            content : '验证码发送失败',
-                            ok : '确定'
-                        })
-                    }
-                })
+                if(!this.verifyLock){
+                    this.verifyLock = true;
+                    var num = 60;
+                    this.axios.get('/api2/api2/users/verify?email='+this.email).then(res=>{
+                        if(res.data.status == 0){
+                            var timer = setInterval(()=>{
+                                num--;
+                                this.text = "等待"+num+"秒";
+                                if(num<=0){
+                                    clearInterval(timer);
+                                    this.verifyLock = false;
+                                    this.text='获取验证码';
+                                }
+                            },1000)
+
+                            msgBox({
+                                title : '验证码',
+                                content : '验证码发送成功',
+                                ok : '确定'
+                            })
+                        }else{
+                            msgBox({
+                                title : '验证码',
+                                content : '验证码发送失败',
+                                ok : '确定'
+                            })
+                        }
+                    })
+                }
             }
         },
         updatePs(){

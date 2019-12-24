@@ -13,5 +13,6 @@ router.get('/verify',usersController.verify);
 router.get('/logout',usersController.logout);
 router.get('/getUser',usersController.getUser);
 router.post('/findPassword',usersController.findPassword);
+router.get('/verifyImg',usersController.verifyImg);
 
 module.exports = router;
