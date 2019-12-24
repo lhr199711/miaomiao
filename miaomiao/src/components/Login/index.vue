@@ -3,6 +3,10 @@
         <form>
             <input type="text" v-model='username' placeholder="用户名/手机号/Email" maxlength="17">
             <input type="password" v-model='password' placeholder="请输入您的密码" autocomplete maxlength="17">
+            <input type="text" v-model='verify' placeholder="请输入验证码" maxlength="8">
+            <div>
+                <img @touchstart="sendRequest" src="/api2/api2/users/verifyImg"><span>点击图片切换验证码</span>
+            </div>
             <div class="loginDiv" @touchstart="loginfn">登录</div>
         </form>
         <div class="options">
@@ -20,7 +24,8 @@ export default {
     data(){
         return {
             username : '',
-            password : ''
+            password : '',
+            verify : ''
         }
     },
     mounted(){
@@ -30,7 +35,8 @@ export default {
         loginfn(){
             this.axios.post('/api2/api2/users/login',{
                 username : this.username,
-                password : this.password
+                password : this.password,
+                verify : this.verify
             }).then((res)=>{
                 if(res.data.status == 0){
                     var vm = this;
@@ -63,6 +69,9 @@ export default {
         },
         findPs(){
             this.$router.push('/mine/findPassword')
+        },
+        sendRequest(e){
+            e.target.src = '/api2/api2/users/verifyImg?'+Math.random();
         }
     },
     beforeRouteEnter (to, from, next) {
