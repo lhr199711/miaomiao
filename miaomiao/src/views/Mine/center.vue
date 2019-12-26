@@ -70,7 +70,10 @@ export default {
                     msgBox({
                         title : '修改头像',
                         content : '修改头像成功',
-                        ok : '确定'
+                        ok : '确定',
+                        okfn(){
+                            window.location.reload();
+                        }
                     })
                 }else{
                     msgBox({
