@@ -38,7 +38,7 @@ var Email = {
 }
 
 var Head = {
-    baseUrl : 'http://localhost:3000/uploads/'
+    baseUrl : 'http://47.96.180.217:3000/uploads/'
 }
 
 module.exports = {
