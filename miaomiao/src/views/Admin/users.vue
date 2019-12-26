@@ -1,6 +1,11 @@
 <template>
     <div>
         <el-table :data="tenItems" border style="width: 100%">
+            <el-table-column width="100" label="用户头像">
+                <template slot-scope="scope">
+                    <img class="userHead" :src="scope.row.headPicUrl" />
+                </template>
+            </el-table-column>
             <el-table-column prop="date" label="注册时间"></el-table-column>
             <el-table-column prop="username" label="用户名"></el-table-column>
             <el-table-column prop="email" label="邮箱"></el-table-column>
@@ -23,7 +28,7 @@ export default {
         return {
             tableData : [],
             nowpage : 1,
-            pageSize : 12
+            pageSize : 8
         }
     },
     mounted(){
@@ -83,5 +88,11 @@ export default {
     }
     .el-pagination{
         display: inline-block;
+    }
+    .userHead{
+        display: block;
+        width: 50px;
+        height: 50px;
+        margin: 0 auto;
     }
 </style>

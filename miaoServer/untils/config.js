@@ -37,6 +37,10 @@ var Email = {
     
 }
 
+var Head = {
+    baseUrl : 'http://localhost:3000/uploads/'
+}
+
 module.exports = {
-    Mongoose,Email
+    Mongoose,Email,Head
 }
