@@ -1,6 +1,7 @@
 const state = {
     username : getCookie("nowUser") || "",
-    isAdmin : eval(getCookie("isAdmin")) || false
+    isAdmin : eval(getCookie("isAdmin")) || false,
+    headPic : window.localStorage.getItem('headPic') || ''
 }
 
 function getCookie(name){
@@ -22,6 +23,9 @@ const mutations = {
     CHANGE_USERNAME(state,payload){
         state.username = payload.username;
         state.isAdmin = payload.isAdmin;
+    },
+    CHANGE_HEADPIC(state,payload){
+        state.headPic = payload.headPic;
     }
 }
 

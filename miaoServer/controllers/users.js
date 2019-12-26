@@ -1,5 +1,6 @@
-var {Email} = require('../untils/config.js');
+var {Email,Head} = require('../untils/config.js');
 var UserModel = require('../models/users.js');
+const fs = require('fs');
 var {toPassword,getVerifyImg} = require('../untils/base.js');
 
 var login = async (req,res,next)=>{
@@ -27,6 +28,7 @@ var login = async (req,res,next)=>{
             res.send({
                 msg : '登录成功',
                 isAdmin : result.isAdmin,
+                headPic : result.headPicUrl,
                 status : 0
             })
         }
@@ -195,6 +197,34 @@ var verifyImg = async (req,res,next)=>{
     
 }
 
+var updateUserHead = async (req,res,next)=>{
+    // console.log(req.file);
+    // // console.log(req.file);
+    await fs.rename('public/uploads/'+ req.file.filename ,'public/uploads/' + req.session.username + '.jpg' , (err)=>{
+        if(err){
+            res.send(err);
+            return ;
+        }
+    })
+    
+    var result = await UserModel.updateHeadPic(req.session.username,Head.baseUrl + req.session.username + '.jpg');
+    
+    if(result){
+        res.send({
+            msg : '头像修改成功',
+            imgUrl: Head.baseUrl + req.session.username + '.jpg',
+            status : 0
+        })
+    }else{
+        res.send({
+            msg : '头像修改失败',
+            status : -1
+        })
+    }
+
+
+}
+
 module.exports = {
     login,
     register,
@@ -202,5 +232,6 @@ module.exports = {
     logout,
     getUser,
     findPassword,
-    verifyImg
+    verifyImg,
+    updateUserHead
 }

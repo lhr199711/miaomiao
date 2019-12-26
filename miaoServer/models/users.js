@@ -1,4 +1,5 @@
-var mongoose = require('mongoose');   
+var mongoose = require('mongoose'); 
+var {Head} = require('../untils/config.js');  
 mongoose.set('useCreateIndex',true);   //为了让index值生效
 
 var UserSchema = new mongoose.Schema({
@@ -7,7 +8,8 @@ var UserSchema = new mongoose.Schema({
     email : {type : String, required : true, index : {unique:true}},
     date : { type : Date , default : Date.now()},
     isAdmin : { type : Boolean , default : false },
-    isFreeze : {type : Boolean , default : false}
+    isFreeze : {type : Boolean , default : false},
+    headPicUrl : {type : String, default : Head.baseUrl + 'default.jpg'}
 })
 
 var UserModel = mongoose.model('users',UserSchema); //这个user是表名，注意在数据库中很可能变成复数
@@ -57,6 +59,16 @@ var deleteOneUser = (email)=>{
     return UserModel.deleteOne({ email });
 }
 
+var updateHeadPic = (username,headPicUrl)=>{
+    return UserModel.update({username},{ $set:{headPicUrl} })
+                    .then(()=>{
+                        return true;
+                    })
+                    .catch(()=>{
+                        return false;
+                    })
+}
+
 
 module.exports = {        //注意这个对象
     save,
@@ -64,5 +76,6 @@ module.exports = {        //注意这个对象
     findPassword,
     usersList,
     updateFreeze,
-    deleteOneUser
+    deleteOneUser,
+    updateHeadPic
 }

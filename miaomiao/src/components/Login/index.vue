@@ -45,12 +45,14 @@ export default {
                     document.cookie="nowUser="+this.username+";path=/;expires="+date.toGMTString(); 
                     document.cookie="isAdmin="+res.data.isAdmin+";path=/;expires="+date.toGMTString(); 
                     this.$store.commit('nowUser/CHANGE_USERNAME',{username:this.username,isAdmin:res.data.isAdmin});
+                    window.localStorage.setItem('headPic',res.data.headPic);
                     msgBox({
                         title : '登录',
                         content : '登录成功',
                         ok: '确定',
                         cancel: '取消',
                         okfn(){
+                            vm.$store.commit('nowUser/CHANGE_HEADPIC',{headPic:res.data.headPic})
                             vm.$router.push('/mine/center')
                         }
                     })
